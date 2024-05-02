@@ -1,6 +1,6 @@
 //Modules externes du package.json
 const express = require('express');
-const db = require("./db");
+const pool = require('./db');
 const bodyParser = require('body-parser');
 
 const PORT = 3000;
@@ -10,20 +10,38 @@ const HOST  = "0.0.0.0";
 const app = express();
 app.use(express.json());
 
+
+app.get("/", (req, res) => {
+    res.send("Hello World!");
+})
+
 //Routes get
-app.get('/', (req, res) => {
-    res.send('Hello World !')
-});
-app.get('/post', (req, res) => {
-    res.json({ message: "Voici les données" });
+app.get('/', async (req, res) => {
+    try {
+        const data = await pool.query('SELECT * FROM velo')
+        res.status(200).send(data.rows)
+    } catch (err) {
+        console.log(err)
+        res.sendStatus(500)
+    }
 });
 
-app.get("/create", async (req, res) => {
+app.post('/', async (req, res) => {
+    const { name, location } = req.body
+    try {
+        await db.query('INSERT INTO velo (name, address) VALUES ($1, $2)', [name, location])
+        res.status(200).send({ message: "Voici les données" })
+    } catch (err){
+        console.log(err)
+        res.sendStatus(500)
+    }
+});
+
+app.get("/setup", async (req, res) => {
     try{
-        const clients = await db.query("CREATE TABLE clients(id SERIAL PRIMARY KEY, name VARCHAR(100), firstname VARCHAR(100))");
-        res.status(200).send({message: "Table créée"});
-    } catch(error) {
-        console.log(error);
+        await pool.query('CREATE TABLE velo (id SERIAL PRIMARY KEY, name VARCHAR(100), address VARCHAR(100))')
+    } catch(err) {
+        console.log(err);
         res.sendStatus(500);
     }
 });

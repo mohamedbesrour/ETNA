@@ -16,6 +16,21 @@ CREATE TABLE Produit (
     stock INT
 );
 
+CREATE TABLE Velo (
+    id INT PRIMARY KEY,
+    nom VARCHAR(255),
+    marque VARCHAR(255),
+    type VARCHAR(255),
+    couleur VARCHAR(50),
+    materiau VARCHAR(50),
+    prix DECIMAL(10, 2),
+    description TEXT,
+    image VARCHAR(999),
+    note_moyenne INT CHECK (note_moyenne >= 0 AND note_moyenne <= 5)
+);
+
+-- INSERT INTO velo (nom, marque, type, couleur, materiau, prix, description, image, note_moyenne) VALUES ('VTT tout terrain', 'Giant', 'VTT', 'Noir', 'Aluminium', 899.99, 'Vélo tout terrain robuste pour les aventures en plein air.', 'https://contents.mediadecathlon.com/p2623168/k$f398192b4f98e6df8359d2b4210d2988/sq/velo-vtt-randonnee-st-50-noir-26.jpg?format=auto&f=1800x1800', 4);
+
 CREATE TABLE Panier (
     id INT PRIMARY KEY,
     userId INT,
