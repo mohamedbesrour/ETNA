@@ -1,4 +1,5 @@
-version: '3.8'
+version: '3.9'
+
 services:
   web:
     build: .
@@ -9,11 +10,16 @@ services:
       - postgres
     environment:
       DATABASE_URL: postgres://user:root@postgres/demodb
+  
+  
   postgres:
     image: postgres:16
+    restart: always
     environment:
-      POSTGRES_USER: user
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: root
-      POSTGRES_DB: demodb
+      POSTGRES_DB: postgres
     ports:
-    - "5432:5432"
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgres/data
