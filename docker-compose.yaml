@@ -9,7 +9,7 @@ services:
     depends_on:
       - postgres
     environment:
-      DATABASE_URL: postgres://user:root@postgres/demodb
+      DATABASE_URL: postgres://user:root@postgres/velo
   
   
   postgres:
