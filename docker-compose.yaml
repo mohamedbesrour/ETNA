@@ -1,25 +1,26 @@
 version: '3.9'
 
 services:
-  web:
-    build: .
-    command: npm run start
-    ports:
-      - "3000:3000"
-    depends_on:
-      - postgres
-    environment:
-      DATABASE_URL: postgres://user:root@postgres/velo
-  
-  
   postgres:
-    image: postgres:16
+    image: postgres
     restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: root
-      POSTGRES_DB: postgres
+      POSTGRES_DB: velo
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgres/data
+      - ./pgdata:/var/lib/postgres/data
+
+  node:
+    build: .
+    command: npm run start
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./server:/usr/src/server
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgres://user:root@postgres/velo

@@ -17,6 +17,7 @@ CREATE TABLE utilisateurs (
     role VARCHAR(255) NOT NULL CHECK (role IN ('admin', 'user'))
 );
 
+-- INSERT INTO produits (titre, categorie, description, image, prix, stock) VALUES ('VTT tout terrain', 'VTT', 'Vélo tout terrain robuste pour les aventures en plein air.', 'https://product-cdn-frz.alltricks.com/large/284/562284/2562284/5168255', 180, 4);
 CREATE TABLE produits (
     id_produit SERIAL PRIMARY KEY,
     titre VARCHAR(255) NOT NULL,
@@ -26,7 +27,7 @@ CREATE TABLE produits (
     prix DECIMAL(10, 2) NOT NULL,
     stock INTEGER NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE commandes (
@@ -51,7 +52,18 @@ CREATE TABLE historique_commande (
     date_commande TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- INSERT INTO velo (nom, marque, type, couleur, materiau, prix, description, image, note_moyenne) VALUES ('VTT tout terrain', 'Giant', 'VTT', 'Noir', 'Aluminium', 899.99, 'Vélo tout terrain robuste pour les aventures en plein air.', 'https://contents.mediadecathlon.com/p2623168/k$f398192b4f98e6df8359d2b4210d2988/sq/velo-vtt-randonnee-st-50-noir-26.jpg?format=auto&f=1800x1800', 4);
+--Fonction nécessaire pour pallier au ON UPDATE CURRENT_TIMESTAMP et mettre a jour update_at
+CREATE OR REPLACE FUNCTION maj_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_maj_updated_at
+BEFORE UPDATE ON produits
+FOR EACH ROW EXECUTE FUNCTION maj_updated_at();
 
 -- CREATE TABLE Panier (
 --     id INT PRIMARY KEY,
