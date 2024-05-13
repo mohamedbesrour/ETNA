@@ -13,6 +13,14 @@ const getProduits = async () => {
     return produit.rows;
 };
 
+const getProduitId = async ( id_produit ) => {
+    const produit = await pool.query(
+        "SELECT * FROM produits WHERE id_produit = $1",
+        [id_produit]
+    );
+    return produit.rows[0];
+};
+
 const putProduit = async (id_produit, titre, categorie, description, image, prix, stock) => {
     const updatedProduit = await pool.query(
         "UPDATE produits SET titre = $1, categorie = $2, description = $3, image = $4, prix = $5, stock = $6 WHERE id_produit = $7 RETURNING *",
@@ -25,4 +33,4 @@ const deleteProduit = async (id_produit) => {
     await pool.query("DELETE FROM produits WHERE id_produit = $1", [id_produit]);
 };
 
-module.exports = { createProduit, getProduits, putProduit, deleteProduit };
+module.exports = { createProduit, getProduits, getProduitId, putProduit, deleteProduit };

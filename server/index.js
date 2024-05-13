@@ -2,7 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const pool = require("./db");
 const userController = require("./controllers/userController");
-const controllerProduit = require("./controllers/controllerProduit");
+const produitController = require("./controllers/produitController");
+const utilisateurController = require("./controllers/utilisateurController");
 
 const app = express();
 const PORT = 3000;
@@ -11,8 +12,8 @@ const HOST = "0.0.0.0";
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/", userController);
-app.use("/", controllerProduit);
-
+app.use("/", produitController);
+app.use("/", utilisateurController);
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });

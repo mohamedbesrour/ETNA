@@ -2,14 +2,14 @@ version: '3.9'
 
 services:
   postgres:
-    image: postgres
+    image: postgres:latest
     restart: always
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: root
       POSTGRES_DB: velo
-    ports:
-      - "5432:5432"
     volumes:
       - ./pgdata:/var/lib/postgres/data
 
@@ -19,7 +19,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./server:/usr/src/server
+      - ./server:/server
     depends_on:
       - postgres
     environment:
