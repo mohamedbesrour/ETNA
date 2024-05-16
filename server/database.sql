@@ -16,6 +16,7 @@ CREATE TABLE utilisateurs (
     password VARCHAR(255) NOT NULL,
     role VARCHAR(255) NOT NULL CHECK (role IN ('admin', 'user'))
 );
+-- INSERT INTO utilisateurs (nom, prenom, email, password, role) VALUES ('besrour', 'mohamed', 'besrou_m@etna-alternance.net', 'root', user);
 
 -- INSERT INTO produits (titre, categorie, description, image, prix, stock) VALUES ('VTT tout terrain', 'VTT', 'Vélo tout terrain robuste pour les aventures en plein air.', 'https://product-cdn-frz.alltricks.com/large/284/562284/2562284/5168255', 180, 4);
 CREATE TABLE produits (
