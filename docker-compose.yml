@@ -11,8 +11,13 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
       POSTGRES_DB: velo
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
-      - local_pgdata:/var/lib/postgresql/data
+      - ./init_db:/docker-entrypoint-initdb.d
 
   pgadmin:
     image: dpage/pgadmin4
@@ -25,7 +30,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: root
     volumes:
       - pgadmin-data:/var/lib/pgadmin
-
+      # - ./init_db/init.sql:/docker-entrypoint-initdb.d
   node:
     build: .
     command: npm run start
@@ -34,7 +39,8 @@ services:
     volumes:
       - ./server:/server
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     environment:
       DATABASE_URL: postgres://root:root@postgres/velo
 
