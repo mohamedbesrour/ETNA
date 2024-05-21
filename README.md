@@ -20,6 +20,10 @@ docker inspect 24006bb24900
     volumes:
       - ./pgdata:/var/lib/postgres/data
 
+  node:
+    environment:
+      DATABASE_URL: postgres://root:root@postgres/velo,
+
 
 docker exec -it 2b09b1d35e5a bash       id de etna-node
 apt-get install netcat -y

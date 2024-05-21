@@ -1,6 +1,15 @@
-CREATE DATABASE velo;
+DO
+$$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = 'velo') THEN
+        CREATE DATABASE velo;
+    END IF;
+END
+$$;
 
-CREATE TABLE users(
+\connect velo
+
+CREATE TABLE IF NOT EXISTS users(
     user_id SERIAL PRIMARY KEY,
     username VARCHAR(255),
     email VARCHAR(255),
@@ -8,7 +17,8 @@ CREATE TABLE users(
     role VARCHAR(255)
 );
 
-CREATE TABLE utilisateurs (
+
+CREATE TABLE IF NOT EXISTS utilisateurs (
     id_utilisateur SERIAL PRIMARY KEY,
     nom VARCHAR(255) NOT NULL,
     prenom VARCHAR(255) NOT NULL,
@@ -19,7 +29,7 @@ CREATE TABLE utilisateurs (
 -- INSERT INTO utilisateurs (nom, prenom, email, password, role) VALUES ('besrour', 'mohamed', 'besrou_m@etna-alternance.net', 'root', user);
 
 -- INSERT INTO produits (titre, categorie, description, image, prix, stock) VALUES ('VTT tout terrain', 'VTT', 'Vélo tout terrain robuste pour les aventures en plein air.', 'https://product-cdn-frz.alltricks.com/large/284/562284/2562284/5168255', 180, 4);
-CREATE TABLE produits (
+CREATE TABLE IF NOT EXISTS produits (
     id_produit SERIAL PRIMARY KEY,
     titre VARCHAR(255) NOT NULL,
     categorie VARCHAR(255),  
@@ -31,14 +41,14 @@ CREATE TABLE produits (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE commandes (
+CREATE TABLE IF NOT EXISTS commandes (
     id_commande SERIAL PRIMARY KEY,
     id_utilisateur INTEGER REFERENCES utilisateurs(id_utilisateur),
     date_commande TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     statut_commande VARCHAR(255)
 );
 
-CREATE TABLE details_commande (
+CREATE TABLE IF NOT EXISTS details_commande (
     id_detail_commande SERIAL PRIMARY KEY,
     id_commande INTEGER REFERENCES commandes(id_commande),
     id_produit INTEGER REFERENCES produits(id_produit),
@@ -46,7 +56,7 @@ CREATE TABLE details_commande (
     prix_unitaire DECIMAL(10, 2) NOT NULL
 );
 
-CREATE TABLE historique_commande (
+CREATE TABLE IF NOT EXISTS historique_commande (
     id_historique SERIAL PRIMARY KEY,
     id_utilisateur INTEGER REFERENCES utilisateurs(id_utilisateur),
     id_commande INTEGER REFERENCES commandes(id_commande),
