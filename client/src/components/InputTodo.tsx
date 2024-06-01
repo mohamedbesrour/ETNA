@@ -1,0 +1,40 @@
+import React, { Fragment, useState } from "react";
+
+const InputTodo: React.FC = () => {
+  // État local pour stocker les données du formulaire
+  const [description, setDescription] = useState<string>("");
+
+  const onSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const body = { description };
+      const response = await fetch(`${process.env.REACT_APP_SERVERURL}/commentaire/todos`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      // window.location = "/employe";
+      window.location.reload();
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  return (
+    <Fragment>
+      <h1 className="text-center mt-5">Donne nous ton avis ici</h1>
+      <form className="d-flex mt-5" onSubmit={onSubmitForm}>
+        <input
+          type="text"
+          className="form-control"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+        <button className="btn btn-success">Add</button>
+      </form>
+    </Fragment>
+  );
+};
+
+export default InputTodo;

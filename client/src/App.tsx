@@ -1,14 +1,19 @@
-import { useState } from 'react'
-import './index.css'
+import React, { Fragment } from "react";
+import { AuthContextProvider } from "./context/authContext";
+import Navigation from "./navigation/Navigation";
+import Footer from "./navigation/Footer"
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App: React.FC = () => {
   return (
     <>
-      <div>Salut</div>
+      <AuthContextProvider>
+        <Fragment>
+          <Navigation />
+          <Footer />
+        </Fragment>
+      </AuthContextProvider>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

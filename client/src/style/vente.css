@@ -1,0 +1,78 @@
+.pageVente {
+  background-color: beige;
+  width: 90vw;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+}
+
+.filters {
+  margin-bottom: 20px;
+}
+
+.car-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Changement de la largeur minimale */
+  gap: 20px;
+}
+
+.large-card {
+  width: 100%; /* Largeur à 100% pour occuper toute la grille */
+  background-color: #f6f6f9;
+}
+
+.car-card {
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+  transition: transform 0.2s;
+  /* margin: 10px;*/
+  /* width: 300px;  */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.car-card:hover {
+  /* transform: translateY(-5px); */
+  transform: scale(1.05);
+}
+
+.car-image img {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  /* border-top-left-radius: 5px;*/
+  /* border-top-right-radius: 5px; */
+}
+
+.car-info {
+  padding: 10px;
+}
+.car-info h2 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+.car-info p {
+  font-size: 1rem;
+  margin: 0;
+}
+.h1Services {
+  text-align: center;
+}
+
+/* Bouton INFO */
+.info-btn {
+  padding: 8px 16px;
+  background-color: #4f5e6e;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 10px;
+  display: block;
+}
+
+.info-btn:hover {
+  background-color: #b4e04d;
+}
