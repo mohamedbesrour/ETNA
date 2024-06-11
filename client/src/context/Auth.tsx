@@ -1,60 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useCookies } from "react-cookie";
 import "../style/auth.css";
+import { AuthContext, AuthContextType } from "../context/AuthContext";
 
 const Auth: React.FC = () => {
+  const { login } = useContext<AuthContextType>(AuthContext);
   const [cookies, setCookie] = useCookies(["Email", "AuthToken"]);
   const [isLogIn, setIsLogin] = useState<boolean>(true);
-  const [email, setEmail] = useState<string | null>(null); // Stocke les valeurs des champs de formulaire
-  const [password, setPassword] = useState<string | null>(null); // Stocke les valeurs ...
-  const [confirmPassword, setConfirmPassword] = useState<string | null>(null); // Stocke les valeurs ...
-  const [error, setError] = useState<string | null>(null); // Affiche le message d'erreur
+  const [email, setEmail] = useState<string | null>(null);
+  const [password, setPassword] = useState<string | null>(null);
+  const [confirmPassword, setConfirmPassword] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  console.log(cookies);
-
-  // Change le statut connexion ou inscription et réinitialise les messages d'erreur
   const viewLogin = (status: boolean) => {
     setError(null);
     setIsLogin(status);
   };
 
   const handleSubmit = async (e: React.FormEvent, endpoint: string) => {
-    e.preventDefault(); // Empêche le rechargement de la page par défaut
+    e.preventDefault();
     if (!isLogIn && password !== confirmPassword) {
-      // Vérifie si les mots de passe correspondent lors de l'inscription
       setError("Le mot de passe ne correspond pas");
       return;
     }
 
-    // Validation de l'email avec une expression régulière
-    const emailRegex = /^[A-Za-z]+@[A-Za-z]+\.[A-Za-z]+$/; // Lettres avant "@" lettres entre "." lettres après.
+    const emailRegex = /^[A-Za-z]+@[A-Za-z]+\.[A-Za-z]+$/;
     if (!emailRegex.test(email || "")) {
       setError("Veuillez saisir une adresse e-mail valide.");
       return;
     }
 
-    // Effectue une requête POST vers le serveur avec les informations d'authentification
-    const response = await fetch(
-      `${process.env.REACT_APP_SERVERURLACCESS}/${endpoint}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" }, // En-têtes de la requête
-        body: JSON.stringify({ email, password }), // Corps de la requête (données au format JSON)
-      }
-    );
+    const response = await fetch(`${process.env.REACT_APP_SERVERURLACCESS}/${endpoint}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-    const data = await response.json(); // Convertit la réponse en format JSON
+    const data = await response.json();
     if (data.detail) {
-      // Vérifie s'il y a une erreur dans la réponse
-      setError(data.detail); // Définit un message d'erreur
+      setError(data.detail);
     } else {
-      // Si aucune erreur n'est retournée
-      // Définit les cookies d'email et de jeton d'authentification avec les données de réponse
       setCookie("Email", data.email);
       setCookie("AuthToken", data.token);
-      // Recharge la page pour appliquer les changements (par exemple, rediriger l'utilisateur connecté)
-      window.location.href = "http://localhost:3000/employe";
-      // window.location.reload();
+      login();
+      window.location.href = "/employe";
     }
   };
 
@@ -84,26 +73,20 @@ const Auth: React.FC = () => {
           <input
             type="submit"
             className="create"
-            onClick={(e) =>
-              handleSubmit(e, isLogIn ? "login" : "signup")
-            }
+            onClick={(e) => handleSubmit(e, isLogIn ? "login" : "signup")}
           />
           {error && <p>{error}</p>}
         </form>
         <div className="auth-options">
           <button
             onClick={() => viewLogin(false)}
-            style={{
-              backgroundColor: !isLogIn ? "rgb(188, 188, 188)" : "rgb(255, 255, 255)",
-            }}
+            style={{ backgroundColor: !isLogIn ? "rgb(188, 188, 188)" : "rgb(255, 255, 255)" }}
           >
             Sign Up
           </button>
           <button
             onClick={() => viewLogin(true)}
-            style={{
-              backgroundColor: isLogIn ? "rgb(188, 188, 188)" : "rgb(255, 255, 255)",
-            }}
+            style={{ backgroundColor: isLogIn ? "rgb(188, 188, 188)" : "rgb(255, 255, 255)" }}
           >
             LogIn
           </button>

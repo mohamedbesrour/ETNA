@@ -33,7 +33,11 @@ const InputUser: React.FC = () => {
 
       window.location.href = "/admin";
     } catch (err) {
-      console.error(err.message);
+      if (err instanceof Error) {
+        console.error(err.message);
+      } else {
+        console.error("An unknown error occurred");
+      }
     }
   };
 

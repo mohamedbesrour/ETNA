@@ -1,17 +1,10 @@
 import React, { useContext } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import { AuthContext } from "../context/authContext";
-
+import { AuthContext, AuthContextType } from "../context/AuthContext";
 import "../style/admin.css";
-
 import InputTodo from "../components/InputTodo";
 import ListTodos from "../components/ListTodos";
-
-// Typing the AuthContext
-interface AuthContextType {
-  isConnect: boolean;
-}
 
 const Employe: React.FC = () => {
   const navigate = useNavigate();

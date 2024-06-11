@@ -20,7 +20,11 @@ const Home: React.FC = () => {
       const jsonData = await response.json();
       setTodos(jsonData);
     } catch (err) {
-      console.error(err.message);
+      if (err instanceof Error) {
+        console.error(err.message);
+      } else {
+        console.error("An unknown error occurred");
+      }
     }
   };
 

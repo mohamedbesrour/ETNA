@@ -9,7 +9,7 @@ import ListUsers from "../components/ListUsers";
 
 import { Navigate, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import { AuthContext } from "../context/authContext";
+import { AuthContext } from "../context/AuthContext";
 
 interface AdminProps {}
 

@@ -2,12 +2,11 @@ FROM node:16
 
 WORKDIR /server
 
-COPY ./server/package*.json ./
+COPY ./server/packa4ge*.json ./
 
 RUN npm install
 
 COPY ./server .
-
 
 EXPOSE 3000
 

@@ -14,6 +14,10 @@ var corsOptions = {
   origin: "http://localhost:8081"
 };
 
+// pour la gestion des routes
+const routeAuth = require("./routes/authRoute");
+app.use("/auth", routeAuth);
+
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

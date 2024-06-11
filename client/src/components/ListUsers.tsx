@@ -1,12 +1,22 @@
 import React, { Fragment, useEffect, useState } from "react";
 import EditUser from "./EditUser";
 
+// Définir le type pour les données des utilisateurs
+interface Utilisateur {
+  user_id: string;
+  role: string;
+  nom: string;
+  prenom: string;
+  email: string;
+  password: string;
+}
+
 const ListUsers = () => {
   // État local pour stocker les données des utilisateurs
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<Utilisateur[]>([]);
 
   // Fonction pour supprimer un utilisateur
-  const deleteUser = async (id) => {
+  const deleteUser = async (id: string) => {
     try {
       await fetch(`http://localhost:5000/connexion/connexion/${id}`, {
         method: "DELETE",
@@ -14,7 +24,11 @@ const ListUsers = () => {
       // Filtrer la liste des utilisateurs pour retirer celui qui a été supprimé
       setUsers(users.filter((connexion) => connexion.user_id !== id));
     } catch (err) {
-      console.error(err.message);
+      if (err instanceof Error) {
+        console.error(err.message);
+      } else {
+        console.error("An unknown error occurred");
+      }
     }
   };
 
@@ -22,10 +36,14 @@ const ListUsers = () => {
   const getUsers = async () => {
     try {
       const response = await fetch("http://localhost:5000/connexion/connexion");
-      const jsonData = await response.json();
+      const jsonData: Utilisateur[] = await response.json();
       setUsers(jsonData);
     } catch (err) {
-      console.error(err.message);
+      if (err instanceof Error) {
+        console.error(err.message);
+      } else {
+        console.error("An unknown error occurred");
+      }
     }
   };
 

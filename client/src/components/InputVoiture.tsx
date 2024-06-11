@@ -36,7 +36,11 @@ const InputVoiture: React.FC = () => {
 
       window.location.href = "/";
     } catch (err) {
-      console.error(err.message);
+      if (err instanceof Error) {
+        console.error(err.message);
+      } else {
+        console.error("An unknown error occurred");
+      }
     }
   };
 

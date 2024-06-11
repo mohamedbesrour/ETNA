@@ -1,16 +1,19 @@
 import React, { Fragment } from "react";
-import { AuthContextProvider } from "./context/authContext";
+import { BrowserRouter } from "react-router-dom";
+import { AuthContextProvider } from "./context/AuthContext";
 import Navigation from "./navigation/Navigation";
-import Footer from "./navigation/Footer"
+import Footer from "./navigation/Footer";
 
 const App: React.FC = () => {
   return (
     <>
       <AuthContextProvider>
-        <Fragment>
-          <Navigation />
-          <Footer />
-        </Fragment>
+        <BrowserRouter>
+          <Fragment>
+            <Navigation />
+            <Footer />
+          </Fragment>
+        </BrowserRouter>
       </AuthContextProvider>
     </>
   );

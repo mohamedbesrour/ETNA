@@ -1,27 +1,42 @@
 import React, { Fragment, useEffect, useState } from "react";
 import EditTodo from "./EditTodo";
 
-const ListTodos = () => {
-  const [todos, setTodos] = useState([]);
+// Define the type for a Todo object
+interface Todo {
+  commentaire_id: string;
+  description: string;
+}
 
-  const deleteTodo = async (id) => {
+const ListTodos = () => {
+  // Use the Todo type with the useState hook
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  const deleteTodo = async (id: string) => {
     try {
       await fetch(`${process.env.REACT_APP_SERVERURL}/commentaire/todos/${id}`, {
         method: "DELETE",
       });
       setTodos(todos.filter((commentaire) => commentaire.commentaire_id !== id));
     } catch (err) {
-      console.error(err.message);
+      if (err instanceof Error) {
+        console.error(err.message);
+      } else {
+        console.error("An unknown error occurred");
+      }
     }
   };
 
   const getTodos = async () => {
     try {
       const response = await fetch(`${process.env.REACT_APP_SERVERURL}/commentaire/todos`);
-      const jsonData = await response.json();
+      const jsonData: Todo[] = await response.json();
       setTodos(jsonData);
     } catch (err) {
-      console.error(err.message);
+      if (err instanceof Error) {
+        console.error(err.message);
+      } else {
+        console.error("An unknown error occurred");
+      }
     }
   };
 

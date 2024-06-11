@@ -1,12 +1,22 @@
 import React, { Fragment, useEffect, useState } from "react";
 import EditVoiture from "./EditVoiture";
 
+// Définir le type pour les données des voitures
+interface Voiture {
+  voiture_id: string;
+  modele: string;
+  annee: string;
+  kilometrage: string;
+  prix: string;
+  img: string;
+}
+
 const ListVoitures = () => {
   // État local pour stocker les données des voitures
-  const [voitures, setVoitures] = useState([]);
+  const [voitures, setVoitures] = useState<Voiture[]>([]);
 
   // Fonction pour supprimer une voiture
-  const deleteVoiture = async (id) => {
+  const deleteVoiture = async (id: string) => { // Modifier le type de id en string
     try {
       await fetch(`http://localhost:5000/voiture/voiture/${id}`, {
         method: "DELETE",
@@ -14,7 +24,11 @@ const ListVoitures = () => {
       // Filtrer la liste des voitures pour retirer celle qui a été supprimée
       setVoitures(voitures.filter((voiture) => voiture.voiture_id !== id));
     } catch (err) {
-      console.error(err.message);
+      if (err instanceof Error) {
+        console.error(err.message);
+      } else {
+        console.error("An unknown error occurred");
+      }
     }
   };
 
@@ -22,10 +36,14 @@ const ListVoitures = () => {
   const getVoitures = async () => {
     try {
       const response = await fetch("http://localhost:5000/voiture/voiture");
-      const jsonData = await response.json();
+      const jsonData: Voiture[] = await response.json();
       setVoitures(jsonData);
     } catch (err) {
-      console.error(err.message);
+      if (err instanceof Error) {
+        console.error(err.message);
+      } else {
+        console.error("An unknown error occurred");
+      }
     }
   };
 
@@ -62,7 +80,7 @@ const ListVoitures = () => {
               <td>
                 <button
                   className="btn btn-danger"
-                  onClick={() => deleteVoiture(voiture.voiture_id)}
+                  onClick={() => deleteVoiture(voiture.voiture_id.toString())} // Convertir id en string
                 >
                   Supprimer
                 </button>

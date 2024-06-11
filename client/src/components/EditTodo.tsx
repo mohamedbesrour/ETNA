@@ -1,100 +1,50 @@
-import React, { Fragment, useState } from "react";
-
-interface Commentaire {
-  commentaire_id: number;
-  description: string;
-}
+import React, { useState } from "react";
 
 interface Props {
-  commentaire: Commentaire;
+  commentaire: {
+    commentaire_id: string;
+    description: string;
+  };
 }
 
 const EditTodo: React.FC<Props> = ({ commentaire }) => {
-  // État local pour stocker les données du formulaire
   const [description, setDescription] = useState(commentaire.description);
 
-  // Edit description function
-  const updateDescription = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const updateDescription = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDescription(e.target.value);
+  };
+
+  const onSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const body = { description };
-      const response = await fetch(
-        `http://localhost:5000/commentaire/todos/${commentaire.commentaire_id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        }
-      );
-
-      // window.location = "/employe";
+      await fetch(`${process.env.REACT_APP_SERVERURL}/commentaire/todos/${commentaire.commentaire_id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+      window.location.reload();
     } catch (err) {
-      console.error(err.message);
+      if (err instanceof Error) {
+        console.error(err.message);
+      } else {
+        console.error("An unknown error occurred");
+      }
     }
   };
 
   return (
-    <Fragment>
-      <button
-        type="button"
-        className="btn btn-warning"
-        data-toggle="modal"
-        data-target={`#id${commentaire.commentaire_id}`}
-      >
-        Edit
-      </button>
-
-      {/* id = id10    pour rendre le modal unique*/}
-      <div
-        className="modal"
-        id={`id${commentaire.commentaire_id}`}
-        onClick={() => setDescription(commentaire.description)} // modifie sur la même ligne
-      >
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h4 className="modal-title">modifier le commentaire</h4>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                onClick={() => setDescription(commentaire.description)} // modifie sur la même ligne
-              >
-                &times;
-              </button>
-            </div>
-
-            <div className="modal-body">
-              <input
-                type="text"
-                className="form-control"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-            </div>
-
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-warning"
-                data-dismiss="modal"
-                onClick={(e) => updateDescription(e)}
-              >
-                Modifier
-              </button>
-              <button
-                type="button"
-                className="btn btn-danger"
-                data-dismiss="modal"
-                onClick={() => setDescription(commentaire.description)} // modifie sur la même ligne
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </Fragment>
+    <div>
+      <h2>Edit Todo</h2>
+      <form onSubmit={onSubmitForm}>
+        <input
+          type="text"
+          value={description}
+          onChange={(e) => updateDescription(e)}
+        />
+        <button>Update</button>
+      </form>
+    </div>
   );
 };
 

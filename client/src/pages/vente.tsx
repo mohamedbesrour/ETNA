@@ -31,8 +31,11 @@ const Vente: React.FC<Props> = () => {
       const jsonData: Voiture[] = await response.json();
       setVoitures(jsonData);
     } catch (err) {
-      console.error(err.message);
-      setError(err);
+      if (err instanceof Error) {
+        console.error(err.message);
+      } else {
+        console.error("An unknown error occurred");
+      }
     }
   };
 

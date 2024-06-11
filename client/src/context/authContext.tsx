@@ -1,17 +1,37 @@
-import React, { createContext } from "react";
+import React, { createContext, useState, useEffect, ReactNode } from "react";
 
-interface AuthContextType {
-  isConnect: string;
+// Typage du contexte AuthContext
+export interface AuthContextType {
+  isConnect: boolean;
+  login: () => void;
 }
 
-export const AuthContext = createContext<AuthContextType>({ isConnect: "" });
+// Création du contexte
+export const AuthContext = createContext<AuthContextType>({
+  isConnect: false,
+  login: () => {},
+});
 
-export const AuthContextProvider: React.FC = ({ children }) => {
-  const isConnect = document.cookie;
-  // Pour la connexion des employés
+// Composant fournisseur du contexte
+export const AuthContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [isConnect, setIsConnect] = useState<boolean>(false);
+
+  useEffect(() => {
+    const isAuthenticated = !!document.cookie;
+    setIsConnect(isAuthenticated);
+  }, []);
+
+  const login = () => {
+    setIsConnect(true);
+  };
+
+  const authContextValue: AuthContextType = {
+    isConnect,
+    login,
+  };
 
   return (
-    <AuthContext.Provider value={{ isConnect }}>
+    <AuthContext.Provider value={authContextValue}>
       {children}
     </AuthContext.Provider>
   );
