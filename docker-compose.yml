@@ -1,6 +1,31 @@
 version: '3.9'
 
 services:
+  frontend:
+    build:
+      context: ./client  # Chemin relatif depuis le répertoire racine du projet
+      dockerfile: Dockerfile  # Nom du fichier Dockerfile
+    ports:
+      - "3001:3000"  # Mapping du port local 3001 sur le port 3000 du conteneur
+    environment:
+      - REACT_APP_BACKEND_URL=http://node:3000  # URL du backend (utilisez le nom du service dans le réseau Docker)
+    depends_on:
+      - node  # Dépend du service backend node
+
+  node:
+    build: .
+    command: npm run start
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./server:/server
+    environment:
+      DB_USER: postgres
+      DB_PASSWORD: root
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: garage
+
   postgres:
     image: postgres:latest
     container_name: postgres
@@ -8,11 +33,11 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: admin
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: root
-      POSTGRES_DB: velo
+      POSTGRES_DB: garage
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U root"]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -30,23 +55,6 @@ services:
       PGADMIN_DEFAULT_PASSWORD: root
     volumes:
       - pgadmin-data:/var/lib/pgadmin
-
-  node:
-    build: .
-    command: npm run start
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./server:/server
-    depends_on:
-      postgres:
-        condition: service_healthy
-    environment:
-      DB_USER: root
-      DB_PASSWORD: root
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_NAME: velo
 
 volumes:
   local_pgdata:
