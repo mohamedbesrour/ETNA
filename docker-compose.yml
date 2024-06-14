@@ -3,17 +3,19 @@ version: '3.9'
 services:
   frontend:
     build:
-      context: ./client  # Chemin relatif depuis le répertoire racine du projet
-      dockerfile: Dockerfile  # Nom du fichier Dockerfile
+      context: ./client
+      dockerfile: Dockerfile
     ports:
-      - "3001:3000"  # Mapping du port local 3001 sur le port 3000 du conteneur
+      - "3001:3000"
     environment:
-      - REACT_APP_BACKEND_URL=http://node:3000  # URL du backend (utilisez le nom du service dans le réseau Docker)
+      - REACT_APP_BACKEND_URL=http://node:3000
     depends_on:
-      - node  # Dépend du service backend node
+      - node
 
   node:
-    build: .
+    build: 
+      context: ./server
+      dockerfile: Dockerfile
     command: npm run start
     ports:
       - "3000:3000"
@@ -43,18 +45,6 @@ services:
       retries: 5
     volumes:
       - ./init_db:/docker-entrypoint-initdb.d
-
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin4_container
-    restart: always
-    ports:
-      - "5050:80"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: root
-    volumes:
-      - pgadmin-data:/var/lib/pgadmin
 
 volumes:
   local_pgdata:
