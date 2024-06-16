@@ -31,7 +31,11 @@ const InputUser: React.FC = () => {
         body: JSON.stringify(body),
       });
 
-      window.location.href = "/admin";
+      if (response.ok) {
+        window.location.href = "/admin";
+      } else {
+        console.error("Failed to submit form");
+      }
     } catch (err) {
       if (err instanceof Error) {
         console.error(err.message);
@@ -44,10 +48,10 @@ const InputUser: React.FC = () => {
   return (
     <Fragment>
       <h1 className="text-center mt-5">Ajouter un employé</h1>
-      <form className="d-flex mt-5" onSubmit={onSubmitForm}>
+      <form className="d-flex flex-column align-items-center mt-5" onSubmit={onSubmitForm}>
         <input
           type="text"
-          className="form-control"
+          className="form-control mb-3"
           name="role"
           value={role}
           onChange={onChange}
@@ -55,7 +59,7 @@ const InputUser: React.FC = () => {
         />
         <input
           type="text"
-          className="form-control"
+          className="form-control mb-3"
           name="nom"
           value={nom}
           onChange={onChange}
@@ -63,7 +67,7 @@ const InputUser: React.FC = () => {
         />
         <input
           type="text"
-          className="form-control"
+          className="form-control mb-3"
           name="prenom"
           value={prenom}
           onChange={onChange}
@@ -71,19 +75,19 @@ const InputUser: React.FC = () => {
         />
         <input
           type="email"
-          className="form-control"
+          className="form-control mb-3"
           name="email"
           value={email}
           onChange={onChange}
-          placeholder="email"
+          placeholder="Email"
         />
         <input
           type="password"
-          className="form-control"
+          className="form-control mb-3"
           name="password"
           value={password}
           onChange={onChange}
-          placeholder="mot de passe"
+          placeholder="Mot de passe"
         />
         <button className="btn btn-success">Enregistré</button>
       </form>

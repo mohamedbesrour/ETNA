@@ -4,16 +4,16 @@ CREATE TABLE
     commentaire(
         commentaire_id SERIAL PRIMARY KEY,
         description VARCHAR(255)
-    );
+);
 CREATE TABLE
     voiture(
         voiture_id SERIAL PRIMARY KEY,
         modele VARCHAR(255),
         annee VARCHAR(255),
         kilometrage VARCHAR(255),
-        prix VARCHAR(255),
+        prix VARCHAR(255), 
         img VARCHAR(999)
-    );
+);
 CREATE TABLE
     connexion(
         user_id SERIAL PRIMARY KEY,
@@ -22,7 +22,7 @@ CREATE TABLE
         prenom VARCHAR(255),
         email VARCHAR(255),
         password VARCHAR(255)
-    );
+);
 CREATE TABLE users (
   email VARCHAR(255) PRIMARY KEY,
   password VARCHAR(255)
@@ -30,4 +30,4 @@ CREATE TABLE users (
 CREATE TABLE admin (
   email VARCHAR(255) PRIMARY KEY,
   password VARCHAR(255)
-);
+);9

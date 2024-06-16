@@ -34,7 +34,11 @@ const InputVoiture: React.FC = () => {
         body: JSON.stringify(body),
       });
 
-      window.location.href = "/";
+      if (response.ok) {
+        window.location.href = "/"; // Redirection si la requête POST réussit
+      } else {
+        console.error("Failed to submit form"); // Message d'erreur si la requête échoue
+      }
     } catch (err) {
       if (err instanceof Error) {
         console.error(err.message);
@@ -47,10 +51,10 @@ const InputVoiture: React.FC = () => {
   return (
     <Fragment>
       <h1 className="text-center mt-5">Ajouter un nouveau véhicule</h1>
-      <form className="d-flex mt-5" onSubmit={onSubmitForm}>
+      <form className="d-flex flex-column align-items-center mt-5" onSubmit={onSubmitForm}>
         <input
           type="text"
-          className="form-control"
+          className="form-control mb-3"
           name="modele"
           value={modele}
           onChange={onChange}
@@ -58,7 +62,7 @@ const InputVoiture: React.FC = () => {
         />
         <input
           type="text"
-          className="form-control"
+          className="form-control mb-3"
           name="annee"
           value={annee}
           onChange={onChange}
@@ -66,7 +70,7 @@ const InputVoiture: React.FC = () => {
         />
         <input
           type="text"
-          className="form-control"
+          className="form-control mb-3"
           name="kilometrage"
           value={kilometrage}
           onChange={onChange}
@@ -74,7 +78,7 @@ const InputVoiture: React.FC = () => {
         />
         <input
           type="text"
-          className="form-control"
+          className="form-control mb-3"
           name="prix"
           value={prix}
           onChange={onChange}
@@ -82,7 +86,7 @@ const InputVoiture: React.FC = () => {
         />
         <input
           type="text"
-          className="form-control"
+          className="form-control mb-3"
           name="img"
           value={img}
           onChange={onChange}
