@@ -48,7 +48,6 @@ const NavBar: React.FC<NavBarProps> = () => {
   );
 };
 
-// Styled-components restent inchangés sauf si on veut les typer explicitement
 const Nav = styled.nav`
   display: flex;
   justify-content: space-around;

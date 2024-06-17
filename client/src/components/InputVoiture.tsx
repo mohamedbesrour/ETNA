@@ -35,9 +35,9 @@ const InputVoiture: React.FC = () => {
       });
 
       if (response.ok) {
-        window.location.href = "/"; // Redirection si la requête POST réussit
+        window.location.href = "/admin"; // Redirection si POST réussit
       } else {
-        console.error("Failed to submit form"); // Message d'erreur si la requête échoue
+        console.error("Failed to submit form");
       }
     } catch (err) {
       if (err instanceof Error) {

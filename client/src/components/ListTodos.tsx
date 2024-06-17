@@ -1,14 +1,12 @@
 import React, { Fragment, useEffect, useState } from "react";
 import EditTodo from "./EditTodo";
 
-// Define the type for a Todo object
 interface Todo {
   commentaire_id: string;
   description: string;
 }
 
 const ListTodos = () => {
-  // Use the Todo type with the useState hook
   const [todos, setTodos] = useState<Todo[]>([]);
 
   const deleteTodo = async (id: string) => {

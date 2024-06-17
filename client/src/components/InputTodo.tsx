@@ -13,7 +13,7 @@ const InputTodo: React.FC = () => {
         body: JSON.stringify(body)
       });
       window.location.reload();
-    } catch (err: any) { // Typé en `any`
+    } catch (err: any) {
       console.error(err.message);
     }
   };

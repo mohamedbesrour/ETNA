@@ -19,6 +19,9 @@ const Admin: React.FC<AdminProps> = () => {
 
   const { isConnect } = useContext(AuthContext);//supp cookies logout
 
+  // useEffect(() => {}, []);
+  // const [exampleState, setExampleState] = useState(null);
+
   const signOut = () => {
     try {
       console.log("signout");
@@ -27,7 +30,7 @@ const Admin: React.FC<AdminProps> = () => {
       removeCookie("AuthToken");
       removeCookie("_gid");
       removeCookie("_ga");
-      navigate("/"); // Déplacez la navigation après la suppression des cookies
+      navigate("/connexion"); // Déplacez la navigation après la suppression des cookies
       window.location.reload();
     } catch (err) {
       console.error("error: ", err);

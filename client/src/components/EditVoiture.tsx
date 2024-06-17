@@ -36,7 +36,7 @@ const EditVoiture: React.FC<Props> = ({ voiture }) => {
         body: JSON.stringify(formData)
       });
       window.location.href = "/admin";
-    } catch (err: any) { // Typé en `any`
+    } catch (err: any) {
       console.error(err.message);
     }
   };

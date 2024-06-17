@@ -1,152 +1,100 @@
-/* .footer {
-    background-color: rgba(0, 0, 0, 0.884);
-    justify-self: center;
-    display: grid;
-    grid-template-columns: [] 1fr [];
-    color: white;
-    margin-top: 100px;
-  }
-  
-  .hourly {
-    justify-self: center;
-  }
-  
-  .social-link {
-    justify-self: center;
-    color: white;
-  }
-  
-  .footer-link {
-    color: white;
-    text-decoration: none;
-  }
-  
-  .copyright {
-    justify-self: center;
-    text-transform: uppercase;
-    font-weight: 700;
-  }
-  
-  .copyright > p {
-    padding: 20px;
-    margin: 0;
-  }
-  
-  .footer-title {
-    text-align: center;
-  }
-    .hourly {
-    justify-self: center;
-  }
-  
-  .hourly > li {
-    list-style: none;
-    text-transform: capitalize;
-  }
-  
-  .logo-social {
-    height: 20px;
-  }
-  
-  @media screen and (min-width: 1000px) {
-    .footer {
-      display: grid;
-      grid-template-columns: [a] 1fr [b] 1fr [c];
-      grid-template-rows: [a] 1fr [b] 80px [c];
-    }
-  
-    .foot-bloc {
-      justify-self: center;
-      align-self: center;
-    }
-  
-    .copyright {
-      grid-row: b / c;
-      grid-column: a / c;
-      justify-self: center;
-      justify-self: center;
-      text-align: center;
-    }
-  } */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-
-
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-.footainer{
-	max-width: 1170px;
-	margin:auto;
-}
-.row{
-	display: flex;
-	flex-wrap: wrap;
-}
-ul{
-	list-style: none;
-}
-.footer{
-	background-color: #24262b;
-    padding: 50px 0;
-}
-.footer-col{
-   width: 25%;
-   padding: 0 15px;
-}
-.footer-col h4{
-	font-size: 18px;
-	color: #ffffff;
-	text-transform: capitalize;
-  margin-left: 35px;
-	margin-bottom: 25px;
-	font-weight: 500;
-	position: relative;
-}
-.footer-col h4::before{
-	content: '';
-	position: absolute;
-	left:0;
-	bottom: -10px;
-	background-color: #e91e63;
-	height: 2px;
-	box-sizing: border-box;
-	width: 50px;
-}
-.footer-col ul li:not(:last-child){
-	margin-bottom: 10px;
-}
-.footer-col ul li a{
-	font-size: 16px;
-	text-transform: capitalize;
-	color: #ffffff;
-	text-decoration: none;
-	font-weight: 300;
-	color: #bbbbbb;
-	display: block;
-	transition: all 0.3s ease;
-}
-.footer-col ul li a:hover{
-	color: #ffffff;
-	padding-left: 8px;
-}
-.social-links{
-  margin-left: 35px;
-}
-.footer-col .social-links a{
-	display: inline-block;
-	height: 40px;
-	width: 40px;
-	background-color: rgba(255,255,255,0.2);
-	margin:0 10px 10px 0;
-	text-align: center;
-	line-height: 40px;
-	border-radius: 50%;
-	color: #ffffff;
-	transition: all 0.5s ease;
+/* Reset des styles de base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-.footer-col .social-links a:hover{
-	color: #24262b;
-	background-color: #ffffff;
+/* Styles du footer */
+.footer {
+  background-color: #24262b;
+  padding: 50px 0;
+  text-align: center; /* Centrage du contenu */
+}
+
+.footainer {
+  max-width: 1170px; 
+  margin: auto;
+  display: flex;
+  justify-content: space-between; /* Espacement entre les colonnes */
+  flex-wrap: wrap;
+  border: 1px solid red;
+}
+
+.footer-col {
+  flex: 1; /* Les colonnes prennent l'espace disponible */
+  max-width: 23%; /* Limite maximale pour quatre colonnes */
+  padding: 0 15px;
+  text-align: left; /* Alignement du texte à gauche */
+  border: 1px solid green;
+  min-width: 200px;
+}
+
+.footer-col:nth-child(2), .footer-col:nth-child(3) {
+  margin: 0 15px; /* Ajout de marges latérales aux colonnes intérieures */
+}
+
+.footer-col h4 {
+  font-size: 18px;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin-bottom: 20px; /* Réduction de la marge inférieure */
+  position: relative;
+}
+
+.footer-col h4::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -10px;
+  background-color: #e91e63;
+  height: 2px;
+  width: 50px;
+}
+
+.footer-col ul {
+  list-style: none;
+  padding-left: 0; /* Suppression du padding à gauche */
+}
+
+.footer-col ul li {
+  margin-bottom: 10px;
+}
+
+.footer-col ul li a {
+  font-size: 16px;
+  color: #bbbbbb;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.footer-col ul li a:hover {
+  color: #ffffff;
+}
+
+.social-links {
+  margin-top: 20px; /* Ajout d'espace au-dessus des icônes sociales */
+}
+
+.footer-col .social-links a {
+  display: inline-block;
+  height: 35px;
+  width: 35px;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin-right: 10px; /* Espacement des icônes */
+  text-align: center;
+  line-height: 40px;
+  border-radius: 50%;
+  color: #ffffff;
+  transition: all 0.5s ease;
+}
+
+.footer-col .social-links a:hover {
+  color: #24262b;
+  background-color: #ffffff;
 }
 
 .icon {
@@ -159,26 +107,14 @@ ul{
 }
 
 .copyright {
-	text-align: center; /* Ajout de cette ligne */
-	margin: 0 auto; /* Suppression de margin:auto de justify-self */
-	text-transform: uppercase;
-	font-weight: 700;
-  }
-  .copyright > p {
-	padding: 0px;
-	margin: 0;
-	color: #ffffff;
-  }
-  
+  margin-top: 30px; /* Espacement vers le haut */
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #ffffff;
+}
 
-@media(max-width: 767px){
-  .footer-col{
-    width: 50%;
-    margin-bottom: 30px;
-}
-}
-@media(max-width: 574px){
-  .footer-col{
-    width: 100%;
-}
+@media (min-width: 992px) {
+  .footer-col {
+    flex: 1 0 23%; /* Flex-grow pour prendre un espace égal */
+  }
 }

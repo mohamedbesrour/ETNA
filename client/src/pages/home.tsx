@@ -13,7 +13,7 @@ interface Todo {
 const Home: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
 
-  // Fetch comments
+  // Fetch
   const getTodos = async () => {
     try {
       const response = await fetch(`${process.env.REACT_APP_SERVERURL}/commentaire/todos`);

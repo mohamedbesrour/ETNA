@@ -15,7 +15,6 @@ const postInscription = async (req, res) => {
     );
 
     const token = jwt.sign({ email }, "secret", { expiresIn: "1hr" });
-4
     res.status(200).json({ signUp }); // token
   } catch (err) {
     console.error(err);

@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import EditVoiture from "./EditVoiture";
 
-// Définir le type pour les données des voitures
 interface Voiture {
   voiture_id: string;
   modele: string;
@@ -10,18 +9,16 @@ interface Voiture {
   prix: string;
   img: string;
 }
-
+ 
 const ListVoitures = () => {
-  // État local pour stocker les données des voitures
+
   const [voitures, setVoitures] = useState<Voiture[]>([]);
 
-  // Fonction pour supprimer une voiture
   const deleteVoiture = async (id: string) => { // Modifier le type de id en string
     try {
       await fetch(`http://localhost:5000/voiture/voiture/${id}`, {
         method: "DELETE",
       });
-      // Filtrer la liste des voitures pour retirer celle qui a été supprimée
       setVoitures(voitures.filter((voiture) => voiture.voiture_id !== id));
     } catch (err) {
       if (err instanceof Error) {
@@ -32,7 +29,6 @@ const ListVoitures = () => {
     }
   };
 
-  // Fonction pour récupérer la liste des voitures depuis le serveur
   const getVoitures = async () => {
     try {
       const response = await fetch("http://localhost:5000/voiture/voiture");
@@ -47,7 +43,6 @@ const ListVoitures = () => {
     }
   };
 
-  // Utiliser useEffect pour appeler getVoitures une fois que le composant est monté
   useEffect(() => {
     getVoitures();
   }, []);

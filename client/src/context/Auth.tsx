@@ -5,6 +5,7 @@ import { AuthContext, AuthContextType } from "../context/AuthContext";
 
 const Auth: React.FC = () => {
   const { login } = useContext<AuthContextType>(AuthContext);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [cookies, setCookie] = useCookies(["Email", "AuthToken"]);
   const [isLogIn, setIsLogin] = useState<boolean>(true);
   const [email, setEmail] = useState<string>("");
@@ -83,7 +84,7 @@ const Auth: React.FC = () => {
           </button>
           {error && <p>{error}</p>}
         </form>
-        <div className="auth-options">
+        {/* <div className="auth-options">
           <button
             onClick={() => viewLogin(false)}
             style={{ backgroundColor: !isLogIn ? "rgb(188, 188, 188)" : "rgb(255, 255, 255)" }}
@@ -96,7 +97,7 @@ const Auth: React.FC = () => {
           >
             Se connecter
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

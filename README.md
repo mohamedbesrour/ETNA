@@ -37,3 +37,14 @@ postgres [172.18.0.3] 5432 (postgresql) open
 FRONT-END /
 npm create vite@latest  ==> React  ==> Typescript
 cd client
+
+Docker HUB:
+CMD
+- docker images
+puis ajouter les images utilisé 
+- docker tag b80081928e1d mohamedbesrour/garage-auto:back  
+- docker tag 49aaca57ef70 mohamedbesrour/garage-auto:front                                                  
+
+ensuite push
+- docker push mohamedbesrour/garage-auto:back
+- docker push mohamedbesrour/garage-auto:front

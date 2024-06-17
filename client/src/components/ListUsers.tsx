@@ -1,28 +1,25 @@
 import React, { Fragment, useEffect, useState } from "react";
 import EditUser from "./EditUser";
 
-// Définir le type pour les données des utilisateurs
 interface Utilisateur {
-  user_id: string;
-  role: string;
-  nom: string;
-  prenom: string;
+  // user_id: string;
+  // role: string;
+  // nom: string;
+  // prenom: string;
   email: string;
   password: string;
 }
 
 const ListUsers = () => {
-  // État local pour stocker les données des utilisateurs
   const [users, setUsers] = useState<Utilisateur[]>([]);
 
-  // Fonction pour supprimer un utilisateur
   const deleteUser = async (id: string) => {
     try {
-      await fetch(`http://localhost:5000/connexion/connexion/${id}`, {
+      await fetch(`http://localhost:5000/users/users/${id}`, {
         method: "DELETE",
       });
-      // Filtrer la liste des utilisateurs pour retirer celui qui a été supprimé
-      setUsers(users.filter((connexion) => connexion.user_id !== id));
+      // Filtre les utilisateurs pour retirer celuisupprimé
+      setUsers(users.filter((users) => users.email !== id));
     } catch (err) {
       if (err instanceof Error) {
         console.error(err.message);
@@ -32,10 +29,9 @@ const ListUsers = () => {
     }
   };
 
-  // Fonction pour récupérer la liste des utilisateurs depuis le serveur
   const getUsers = async () => {
     try {
-      const response = await fetch("http://localhost:5000/connexion/connexion");
+      const response = await fetch("http://localhost:5000/users/users");
       const jsonData: Utilisateur[] = await response.json();
       setUsers(jsonData);
     } catch (err) {
@@ -47,7 +43,6 @@ const ListUsers = () => {
     }
   };
 
-  // Utiliser useEffect pour appeler getUsers une fois que le composant est monté
   useEffect(() => {
     getUsers();
   }, []);
@@ -57,9 +52,9 @@ const ListUsers = () => {
       <table className="table">
         <thead>
           <tr>
-            <th>Rôle</th>
+            {/* <th>Rôle</th>
             <th>Nom</th>
-            <th>Prénom</th>
+            <th>Prénom</th> */}
             <th>Email</th>
             <th>Mot de passe</th>
             <th>Edit</th>
@@ -67,20 +62,20 @@ const ListUsers = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((connexion) => (
-            <tr key={connexion.user_id}>
-              <td>{connexion.role}</td>
+          {users.map((users) => (
+            <tr key={users.email}>
+              {/* <td>{connexion.role}</td>
               <td>{connexion.nom}</td>
-              <td>{connexion.prenom}</td>
-              <td>{connexion.email}</td>
-              <td>{connexion.password}</td>
+              <td>{connexion.prenom}</td> */}
+              <td>{users.email}</td>
+              <td>{users.password}</td>
               <td>
-                <EditUser connexion={connexion} />
+                <EditUser users={users} />
               </td>
               <td>
                 <button
                   className="btn btn-danger"
-                  onClick={() => deleteUser(connexion.user_id)}
+                  onClick={() => deleteUser(users.email)}
                 >
                   Delete
                 </button>

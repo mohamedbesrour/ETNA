@@ -1,19 +1,23 @@
 import React, { Fragment, useState, ChangeEvent, FormEvent } from "react";
+import AuthEmployeSurPageAdmin from "../context/AuthEmployeSurPageAdmin";
 
 const InputUser: React.FC = () => {
-  // État local pour stocker les données du formulaire
   const [formData, setFormData] = useState({
-    role: "",
-    nom: "",
-    prenom: "",
+    // role: "",
+    // nom: "",
+    // prenom: "",
     email: "",
     password: "",
   });
 
-  // Destructuration des données du formulaire pour une utilisation plus facile
-  const { role, nom, prenom, email, password } = formData;
+  const { 
+    // role, 
+    // nom, 
+    // prenom, 
+    email, 
+    password } = formData;
 
-  // Fonction de mise à jour des données du formulaire lorsqu'un champ change
+  // target des changement des données du champs formulaire
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -21,11 +25,15 @@ const InputUser: React.FC = () => {
   const onSubmitForm = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      // Crée un objet 'body' contenant les données du formulaire
-      const body = { role, nom, prenom, email, password };
+      const body = { 
+        // role, 
+        // nom, 
+        // prenom, 
+        email, 
+        password };
       
-      // Envoie une requête POST au serveur avec les données du formulaire
-      const response = await fetch("http://localhost:5000/connexion", {
+      // Requête POST au serveur avec les données
+      const response = await fetch("http://localhost:5000/users/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -49,7 +57,7 @@ const InputUser: React.FC = () => {
     <Fragment>
       <h1 className="text-center mt-5">Ajouter un employé</h1>
       <form className="d-flex flex-column align-items-center mt-5" onSubmit={onSubmitForm}>
-        <input
+        {/* <input
           type="text"
           className="form-control mb-3"
           name="role"
@@ -72,7 +80,7 @@ const InputUser: React.FC = () => {
           value={prenom}
           onChange={onChange}
           placeholder="Prénom de l'employé"
-        />
+        /> */}
         <input
           type="email"
           className="form-control mb-3"
@@ -91,6 +99,8 @@ const InputUser: React.FC = () => {
         />
         <button className="btn btn-success">Enregistré</button>
       </form>
+
+      <AuthEmployeSurPageAdmin />
     </Fragment>
   );
 };
