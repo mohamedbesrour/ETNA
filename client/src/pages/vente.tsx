@@ -21,12 +21,14 @@ const Vente: React.FC<Props> = () => {
   const [error, setError] = useState<Error | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedCar, setSelectedCar] = useState<Voiture | null>(null);
+  const [galerieImages, setGalerieImages] = useState<string[]>([]); // Pour les images de la galerie
 
+  // Récupérer les voitures depuis l'API
   const getVoitures = async () => {
     try {
       const response = await fetch(`${process.env.REACT_APP_SERVERURL}/voiture/voiture`);
       if (!response.ok) {
-        throw new Error('Erreur lors de la récupération des voitures');
+        throw new Error("Erreur lors de la récupération des voitures");
       }
       const jsonData: Voiture[] = await response.json();
       setVoitures(jsonData);
@@ -43,6 +45,7 @@ const Vente: React.FC<Props> = () => {
     getVoitures();
   }, []);
 
+  // Gérer les filtres de recherche
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setRecherche({ ...recherche, [name]: value });
@@ -50,15 +53,26 @@ const Vente: React.FC<Props> = () => {
 
   const handleSearch = () => {
     const { kilometrage, prix } = recherche;
-    const filteredVoitures = voitures.filter(voiture => 
-      (!kilometrage || parseInt(voiture.kilometrage) <= parseInt(kilometrage)) && 
-      (!prix || parseInt(voiture.prix) <= parseInt(prix))
+    const filteredVoitures = voitures.filter(
+      (voiture) =>
+        (!kilometrage || parseInt(voiture.kilometrage) <= parseInt(kilometrage)) &&
+        (!prix || parseInt(voiture.prix) <= parseInt(prix))
     );
     setResultat(filteredVoitures);
   };
 
-  const handleCardClick = (voiture: Voiture) => {
+  // Gérer le clic sur une voiture pour afficher la modal
+  const handleCardClick = async (voiture: Voiture) => {
     setSelectedCar(voiture);
+    try {
+      // Récupérer les images de la galerie associées à la voiture
+      const response = await fetch(`${process.env.REACT_APP_SERVERURL}/voiture/galerie/${voiture.voiture_id}`);
+      const images = await response.json();
+      // Extraire les URL des images et les stocker dans l'état
+      setGalerieImages(images.map((img: { img_url: string }) => img.img_url));
+    } catch (err) {
+      console.error("Erreur lors de la récupération des images de la galerie", err);
+    }
     setIsModalOpen(true);
   };
 
@@ -76,47 +90,61 @@ const Vente: React.FC<Props> = () => {
           <button onClick={handleSearch}>Filtrer</button>
         </div>
         <div className="car-grid">
-          {resultat.length > 0 ? resultat.map((voiture) => (
-            <div className="car-card large-card" key={voiture.voiture_id} onClick={() => handleCardClick(voiture)}>
-              <div className="car-image"><img src={voiture.img} alt="photo de la voiture" /></div>
-              <div className="car-info">
-                <h2>{voiture.modele}</h2>
-                <p>Année : {voiture.annee}</p>
-                <p>Kilométrage : {voiture.kilometrage}</p>
-                <p>Prix : {voiture.prix}€</p>
-                <button className="info-btn">Info</button>
-              </div>
-            </div>
-          )) : voitures.map((voiture) => (
-            <div className="car-card large-card" key={voiture.voiture_id} onClick={() => handleCardClick(voiture)}>
-              <div className="car-image"><img src={voiture.img} alt="photo de la voiture" /></div>
-              <div className="car-info">
-                <h2>{voiture.modele}</h2>
-                <p>Année : {voiture.annee}</p>
-                <p>Kilométrage : {voiture.kilometrage}</p>
-                <p>Prix : {voiture.prix}€</p>
-                <button className="info-btn">Info</button>
-              </div>
-            </div>
-          ))}
+          {resultat.length > 0
+            ? resultat.map((voiture) => (
+                <div className="car-card large-card" key={voiture.voiture_id} onClick={() => handleCardClick(voiture)}>
+                  <div className="car-image">
+                    <img src={voiture.img} alt="photo de la voiture" />
+                  </div>
+                  <div className="car-info">
+                    <h2>{voiture.modele}</h2>
+                    <p>Année : {voiture.annee}</p>
+                    <p>Kilométrage : {voiture.kilometrage}</p>
+                    <p>Prix : {voiture.prix}€</p>
+                    <button className="info-btn">Info</button>
+                  </div>
+                </div>
+              ))
+            : voitures.map((voiture) => (
+                <div className="car-card large-card" key={voiture.voiture_id} onClick={() => handleCardClick(voiture)}>
+                  <div className="car-image">
+                    <img src={voiture.img} alt="photo de la voiture" />
+                  </div>
+                  <div className="car-info">
+                    <h2>{voiture.modele}</h2>
+                    <p>Année : {voiture.annee}</p>
+                    <p>Kilométrage : {voiture.kilometrage}</p>
+                    <p>Prix : {voiture.prix}€</p>
+                    <button className="info-btn">Info</button>
+                  </div>
+                </div>
+              ))}
         </div>
       </div>
-      {isModalOpen && (
+      {isModalOpen && selectedCar && (
         <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
           <div>
             <h2>Informations du véhicule</h2>
-            <img src={selectedCar?.img} alt="photo de la voiture" />
-            <p>Modèle: {selectedCar?.modele}</p>
-            <p>Année: {selectedCar?.annee}</p>
-            <p>Kilométrage: {selectedCar?.kilometrage}</p>
-            <p>Prix: {selectedCar?.prix}€</p>
-            <p>Email de contact: contact@exemple.com</p>
-            <p>Téléphone de contact: +33 1 23 45 67 89</p>
+            <img src={selectedCar.img} alt="photo de la voiture" />
+            <p>Modèle: {selectedCar.modele}</p>
+            <p>Année: {selectedCar.annee}</p>
+            <p>Kilométrage: {selectedCar.kilometrage}</p>
+            <p>Prix: {selectedCar.prix}€</p>
+            <div className="galerie">
+              <h3>Galerie d'images</h3>
+              <div className="galerie-images">
+                {galerieImages.length > 0 ? (
+                  galerieImages.map((imgUrl, index) => <img key={index} src={imgUrl} alt={`Image ${index + 1}`} />)
+                ) : (
+                  <p>Aucune image disponible</p>
+                )}
+              </div>
+            </div>
           </div>
         </Modal>
       )}
     </Fragment>
   );
-}
+};
 
 export default Vente;

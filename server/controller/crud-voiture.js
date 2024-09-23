@@ -1,5 +1,5 @@
 const pool = require("../db");
-const bcrypt = require("bcrypt");
+const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 
 // -------------------------------- //
@@ -77,4 +77,112 @@ const postVoiture = async (req, res) => {
     }
   };
 
-  module.exports = { postVoiture, getVoiture, getIdVoiture, putVoiture, deleteVoiture };
+
+// GET toutes les images d'une voiture spécifique
+const getGalerieByVoitureId = async (req, res) => {
+  try {
+      const { id } = req.params;
+      const images = await pool.query(
+          "SELECT * FROM galerie WHERE voiture_id = $1",
+          [id]
+      );
+      res.json(images.rows);
+  } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Erreur du serveur");
+  }
+};
+const postGalerieImage = async (req, res) => {
+  try {
+      const { voiture_id, img_url } = req.body;
+
+      // Vérifier si la voiture existe
+      const voiture = await pool.query(
+          "SELECT * FROM voiture WHERE voiture_id = $1",
+          [voiture_id]
+      );
+
+      if (voiture.rows.length === 0) {
+          return res.status(404).json({ message: "Voiture non trouvée" });
+      }
+
+      // Limiter à 3 images par voiture (optionnel)
+      const countImages = await pool.query(
+          "SELECT COUNT(*) FROM galerie WHERE voiture_id = $1",
+          [voiture_id]
+      );
+
+      if (parseInt(countImages.rows[0].count) >= 3) {
+          return res.status(400).json({ message: "Limite de 3 images atteinte pour cette voiture" });
+      }
+
+      const newImage = await pool.query(
+          "INSERT INTO galerie (voiture_id, img_url) VALUES($1, $2) RETURNING *",
+          [voiture_id, img_url]
+      );
+
+      res.json(newImage.rows[0]);
+  } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Erreur du serveur");
+  }
+};
+
+/**
+* PUT modifier une image dans la galerie
+*/
+const updateGalerieImage = async (req, res) => {
+  try {
+      const { id } = req.params;
+      const { img_url } = req.body;
+
+      const updatedImage = await pool.query(
+          "UPDATE galerie SET img_url = $1 WHERE galerie_id = $2 RETURNING *",
+          [img_url, id]
+      );
+
+      if (updatedImage.rows.length === 0) {
+          return res.status(404).json({ message: "Image non trouvée" });
+      }
+
+      res.json(updatedImage.rows[0]);
+  } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Erreur du serveur");
+  }
+};
+
+/**
+* DELETE une image de la galerie
+*/
+const deleteGalerieImage = async (req, res) => {
+  try {
+      const { id } = req.params;
+
+      const deletedImage = await pool.query(
+          "DELETE FROM galerie WHERE galerie_id = $1 RETURNING *",
+          [id]
+      );
+
+      if (deletedImage.rows.length === 0) {
+          return res.status(404).json({ message: "Image non trouvée" });
+      }
+
+      res.json({ message: "Image supprimée avec succès" });
+  } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Erreur du serveur");
+  }
+};
+
+module.exports = { 
+  postVoiture, 
+  getVoiture, 
+  getIdVoiture, 
+  putVoiture, 
+  deleteVoiture,
+  getGalerieByVoitureId,
+  postGalerieImage,
+  updateGalerieImage,
+  deleteGalerieImage
+};

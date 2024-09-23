@@ -57,7 +57,8 @@ const AuthEmployeSurPageAdmin: React.FC = () => {
     <div className="auth-container">
       <div className="auth-container-box">
         <form onSubmit={(e) => handleSubmit(e, isLogIn ? "login" : "signup")}>
-          <h2>Inscrire un nouveau collaborateur ici</h2>
+          <h1>Collaborateur</h1>
+          <h2>{isLogIn ? "Connectez-vous" : "Inscrivez-vous"}</h2>
           <input
             type="text"
             placeholder="Email"
@@ -70,19 +71,33 @@ const AuthEmployeSurPageAdmin: React.FC = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          
+          {!isLogIn && (
             <input
               type="password"
               placeholder="Confirmez le mot de passe"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
-          
+          )}
           <button type="submit" className="create">
-            Ajouter
+            {isLogIn ? "Se connecter" : "S'inscrire"}
           </button>
           {error && <p>{error}</p>}
         </form>
+        <div className="auth-options">
+          <button
+            onClick={() => viewLogin(false)}
+            style={{ backgroundColor: !isLogIn ? "rgb(188, 188, 188)" : "rgb(255, 255, 255)" }}
+          >
+            S'inscrire
+          </button>
+          <button
+            onClick={() => viewLogin(true)}
+            style={{ backgroundColor: isLogIn ? "rgb(188, 188, 188)" : "rgb(255, 255, 255)" }}
+          >
+            Se connecter
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -1,26 +1,18 @@
 import React, { useState } from "react";
 
-interface Connexion {
-  // user_id: string; // Ajouté number plus tard
-  // role: string;
-  // nom: string;
-  // prenom: string;
+interface Utilisateur {
   email: string;
   password: string;
 }
 
-interface Props {
-  users: Connexion;
+interface EditUserProps {
+  user: Utilisateur;
 }
 
-const EditUser: React.FC<Props> = ({ users }) => {
-  const [formData, setFormData] = useState<Connexion>({
-    // user_id: connexion.user_id, // Ajouté
-    // role: connexion.role,
-    // nom: connexion.nom,
-    // prenom: connexion.prenom,
-    email: users.email,
-    password: users.password,
+const EditUser: React.FC<EditUserProps> = ({ user }) => {
+  const [formData, setFormData] = useState<Utilisateur>({
+    email: user.email,
+    password: user.password,
   });
 
   const updateFields = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,14 +22,18 @@ const EditUser: React.FC<Props> = ({ users }) => {
   const onSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await fetch(`http://localhost:5000/users/users/${users.email}`, {
+      await fetch(`http://localhost:5000/users/${user.email}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)
       });
       window.location.href = "/admin";
-    } catch (err: any) {
-      console.error(err.message);
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error(err.message);
+      } else {
+        console.error("An unknown error occurred");
+      }
     }
   };
 
@@ -45,24 +41,6 @@ const EditUser: React.FC<Props> = ({ users }) => {
     <div>
       <h2>Edit User</h2>
       <form onSubmit={onSubmitForm}>
-        {/* <input
-          type="text"
-          name="role"
-          value={formData.role}
-          onChange={updateFields}
-        />
-        <input
-          type="text"
-          name="nom"
-          value={formData.nom}
-          onChange={updateFields}
-        />
-        <input
-          type="text"
-          name="prenom"
-          value={formData.prenom}
-          onChange={updateFields}
-        /> */}
         <input
           type="email"
           name="email"
@@ -75,7 +53,7 @@ const EditUser: React.FC<Props> = ({ users }) => {
           value={formData.password}
           onChange={updateFields}
         />
-        <button>Update</button>
+        <button type="submit">Update</button>
       </form>
     </div>
   );

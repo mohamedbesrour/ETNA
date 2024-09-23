@@ -1,4 +1,5 @@
 const PORT = process.env.PORT ?? 5000;
+
 const express = require("express");
 const cors = require("cors"); //middleware qui permet de gérer les autorisations de domaine croisé pour les requêtes,
 const bodyParser = require("body-parser");// pour la connexion employé
@@ -10,7 +11,7 @@ app.use(cors());
 app.use(express.json()); //req.body
 app.use(bodyParser.json());
 
-// pour la gestion des routes
+// pour la gestion des routes du garage
 const routeCommentaire = require("./route/route-commentaire");
 const routeVoiture = require("./route/route-voiture");
 const routeConnexion = require("./route/route-connexion");

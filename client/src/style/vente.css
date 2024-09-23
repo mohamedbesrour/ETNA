@@ -76,3 +76,17 @@
 .info-btn:hover {
   background-color: #b4e04d;
 }
+
+.galerie {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.galerie img {
+  width: 100px;
+  height: auto;
+  border: 1px solid #ddd;
+  padding: 5px;
+  background-color: #fff;
+}

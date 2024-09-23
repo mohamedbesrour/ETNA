@@ -1,4 +1,6 @@
 import React, { ReactNode } from 'react';
+import ReactDOM from "react-dom";
+
 import '../style/outils/modal.css';
 
 interface ModalProps {
@@ -10,13 +12,15 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
 
-  return (
+  return ReactDOM.createPortal(
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-container" onClick={(e) => e.stopPropagation()}>
         <button className="modal-close-button" onClick={onClose}>X</button>
         {children}
       </div>
-    </div>
+    </div>,
+    document.getElementById("modal-root") as HTMLElement
+
   );
 };
 

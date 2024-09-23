@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 
-export interface AuthContextType {
+interface AuthContextType {
   isConnect: boolean;
   login: () => void;
 }
@@ -33,3 +33,5 @@ export const AuthContextProvider: React.FC<{ children: ReactNode }> = ({ childre
     </AuthContext.Provider>
   );
 };
+
+export type { AuthContextType };

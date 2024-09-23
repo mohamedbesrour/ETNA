@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 interface Voiture {
-  voiture_id: string; // Ajouté number plus tard
+  voiture_id: number; // Ajouté number plus tard
   modele: string;
   annee: string;
   kilometrage: string;
